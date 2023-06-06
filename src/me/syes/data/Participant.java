@@ -1,6 +1,8 @@
 package me.syes.data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 public class Participant {
 
@@ -9,6 +11,7 @@ public class Participant {
 	private int teamId;
 	private String nationality;
 	private boolean isAi;
+	private int fastestLap;
 
 	private int playerIndex;
 
@@ -44,4 +47,13 @@ public class Participant {
 	public int getPlayerIndex() {
 		return playerIndex;
 	}
+
+	public int getFastestLap() {
+		try{
+			return laps.stream().filter(Lap::isValid).min(Comparator.comparing(Lap::getLaptimeMillis)).get().getLapNumber();
+		}catch(NoSuchElementException e){
+			return 0;
+		}
+	}
+
 }

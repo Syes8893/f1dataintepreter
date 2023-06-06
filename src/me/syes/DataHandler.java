@@ -30,8 +30,8 @@ public class DataHandler {
 //			telemetry2.add(new Telemetry(i, 100, telemetry2.get(i/100-1).getThrottle() + new Random().nextInt(3) -1, telemetry2.get(i/100-1).getBrake() + new Random().nextInt(3) -1, false, new Random().nextInt(51) -50));
 //		}
 //		ArrayList<Lap> laps = new ArrayList();
-//		laps.add(new Lap(telemetry, 1, 100000, 30000, 30000, 40000, false, 100));
-//		laps.add(new Lap(telemetry2, 2, 1200, 350, 300, 550, true, 100));
+//		laps.add(new Lap(telemetry, 1, 100000, 30000, 30000, 40000, true, 100));
+//		laps.add(new Lap(telemetry2, 2, 1200, 350, 300, 550, false, 100));
 //		ArrayList<Lap> laps2 = new ArrayList();
 //		laps2.add(new Lap(telemetry2, 34, 100000, 42300, 21300, 34500, true, 100));
 //		ArrayList<Participant> list = new ArrayList();
@@ -45,11 +45,12 @@ public class DataHandler {
 //		list.add(new Participant(laps2, "Verstappen", 7, "Dutch", false, 7));
 //		list.add(new Participant(laps2, "Verstappen", 8, "Dutch", false, 8));
 //		list.add(new Participant(laps2, "Verstappen", 9, "Dutch", false, 9));
-//		races.add(new Race(list, "Short P", "Zandvoort", "11-09-2023",1));
-//		races.add(new Race(null, "R", "Spa", "11-09-2023", 3));
+//		races.add(new Race(list, "Short P", "Canada", "11-09-2023",1));
+//		races.add(new Race(null, "R", "Silverstone", "11-09-2023", 3));
 //		races.add(new Race(null, "SQ", "Bahrain", "11-09-2023", 5));
-//		races.add(new Race(null, "R", "Spa", "03-04-2023", 2));
-//		races.add(new Race(null, "OSQ", "Monza", "23-05-2023",4));
+//		races.add(new Race(null, "R", "Spain", "03-04-2023", 2));
+//		races.add(new Race(null, "OSQ", "Baku", "23-05-2023",4));
+//		races.add(new Race(null, "OSQ", "Australia", "23-05-2023",5));
 		loadData();
 	}
 

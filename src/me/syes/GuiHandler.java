@@ -38,6 +38,9 @@ public class GuiHandler {
 		jFrame.setResizable(false);
 		jPanel.setBackground(new Color(0x282828));
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ImageIcon img = new ImageIcon("resources/app_logo.png");
+		jFrame.setTitle("F1 Data");
+		jFrame.setIconImage(img.getImage());
 		jFrame.add(jPanel);
 		jFrame.pack();
 		jFrame.setLocationRelativeTo(null);

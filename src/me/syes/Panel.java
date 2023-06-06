@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class Panel extends JPanel {
 
 	public GuiHandler guiHandler;
+	int mousepressedX;
 
 	public Panel(GuiHandler guiHandler){
 		this.guiHandler = guiHandler;
@@ -33,6 +34,7 @@ public class Panel extends JPanel {
 
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+				mousepressedX = e.getX();
 				if(e.getY() < 100 && e.getX() < getWidth()/2 && (guiHandler.guiState == GUIState.LAPS || guiHandler.guiState == GUIState.COMPARISONLAPS)){
 					guiHandler.guiState = GUIState.PARTICIPANT;
 					guiHandler.currentScroll = 0;
@@ -90,6 +92,8 @@ public class Panel extends JPanel {
 
 		addMouseMotionListener(new MouseAdapter() {
 			public void mouseDragged(MouseEvent e) {
+				guiHandler.addCurrentScroll(-(e.getX() - mousepressedX)/30);
+				repaint(0, 0, 1280, 720);
 			}
 		});
 	}
@@ -109,12 +113,19 @@ public class Panel extends JPanel {
 
 		if(guiHandler.guiState == GUIState.HOME){
 			for(Race race: App.dataHandler.races){
-				g.setColor(new Color(0x379626));
+				g.setColor(Color.ORANGE);
 				g.fillRect(63, 103 + 55*App.dataHandler.races.indexOf(race) - guiHandler.currentScroll, 1160, 40);
-				g.setColor(new Color(0x27661b));
+				g.setColor(Color.ORANGE.darker());
 				g.fillRect(60, 100 + 55*App.dataHandler.races.indexOf(race) - guiHandler.currentScroll, 1160, 40);
-				g.setColor(new Color(0xc2c2c2));
-				g.drawString("[" + race.getDate() + "] " + race.getSessionType() + ": " + race.getTrackName(), 70, 127 + 55*App.dataHandler.races.indexOf(race) - guiHandler.currentScroll);
+				g.setColor(new Color(0xc2c2c2));int logowidth = 0;
+				try {
+					BufferedImage bufferedImage = ImageIO.read(new File("resources/flags/" + race.getTrackName().toLowerCase().replace(" ", "_") + "_flag.png"));
+					((Graphics2D) g).drawImage(bufferedImage, 70, 120 + 55*App.dataHandler.races.indexOf(race) - guiHandler.currentScroll - bufferedImage.getHeight(null)/2, null);
+					logowidth = bufferedImage.getWidth(null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				g.drawString("[" + race.getDate() + "] " + race.getTrackName() + ": " + race.getSessionType(), 70 + logowidth + 10, 127 + 55*App.dataHandler.races.indexOf(race) - guiHandler.currentScroll);
 			}
 		}
 		else if(guiHandler.guiState == GUIState.RACE){
@@ -129,9 +140,12 @@ public class Panel extends JPanel {
 				g.setColor(new Color(0xc2c2c2));
 				int logowidth = 0;
 				try {
-					BufferedImage bufferedImage = ImageIO.read(new File("resources/" + AppendixUtils.getTeamName(participant.getTeamId()).toLowerCase().replace(" ", "_") + "_logo.png"));
-					((Graphics2D) g).drawImage(bufferedImage, 70, 120 + 55*participants.indexOf(participant) - guiHandler.currentScroll - bufferedImage.getHeight(null)/2, null);
-					logowidth = bufferedImage.getWidth(null);
+					File f= new File("resources/logos/" + AppendixUtils.getTeamName(participant.getTeamId()).toLowerCase().replace(" ", "_") + "_logo.png");
+					if(f.exists()){
+						BufferedImage bufferedImage = ImageIO.read(f);
+						((Graphics2D) g).drawImage(bufferedImage, 70, 120 + 55*participants.indexOf(participant) - guiHandler.currentScroll - bufferedImage.getHeight(null)/2, null);
+						logowidth = bufferedImage.getWidth(null);
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -144,12 +158,18 @@ public class Panel extends JPanel {
 			ArrayList<Lap> laps = App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getLaps();
 			for(Lap lap : laps){
 				if(lap.isValid())
-					g.setColor(new Color(0xaa3bad));
+					if(lap.getLapNumber() == App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getFastestLap())
+						g.setColor(new Color(0xaa3bad));
+					else
+						g.setColor(new Color(0x379626));
 				else
 					g.setColor(new Color(0xba2323));
 				g.fillRect(63, 103 + 55*laps.indexOf(lap) - guiHandler.currentScroll, 1160, 40);
 				if(lap.isValid())
-					g.setColor(new Color(0x5a1e5c));
+					if(lap.getLapNumber() == App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getFastestLap())
+						g.setColor(new Color(0x5a1e5c));
+					else
+						g.setColor(new Color(0x27661b));
 				else
 					g.setColor(new Color(0x8a1919));
 				g.fillRect(60, 100 + 55*laps.indexOf(lap) - guiHandler.currentScroll, 1160, 40);
@@ -162,7 +182,7 @@ public class Panel extends JPanel {
 		}
 		else if(guiHandler.guiState == GUIState.LAPS){
 			Lap lap = App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getLaps().get(guiHandler.selectedLap);
-			lap.drawTelemetry(this, g, 0, Color.GRAY, Color.GREEN, Color.RED, App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getName());
+			lap.drawTelemetry(this, g, 0, Color.CYAN, Color.GRAY, Color.GREEN, Color.RED, App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getName());
 			//draw telemetry data for selected lap
 		}else if(guiHandler.guiState == GUIState.COMPARISONRACE){
 			ArrayList<Participant> participants = App.dataHandler.races.get(guiHandler.selectedRace).getParticipants();
@@ -176,7 +196,7 @@ public class Panel extends JPanel {
 				g.setColor(new Color(0xc2c2c2));
 				int logowidth = 0;
 				try {
-					BufferedImage bufferedImage = ImageIO.read(new File("resources/" + AppendixUtils.getTeamName(participant.getTeamId()).toLowerCase().replace(" ", "_") + "_logo.png"));
+					BufferedImage bufferedImage = ImageIO.read(new File("resources/logos/" + AppendixUtils.getTeamName(participant.getTeamId()).toLowerCase().replace(" ", "_") + "_logo.png"));
 					((Graphics2D) g).drawImage(bufferedImage, 70, 120 + 55*participants.indexOf(participant) - guiHandler.currentScroll - bufferedImage.getHeight(null)/2, null);
 					logowidth = bufferedImage.getWidth(null);
 				} catch (IOException e) {
@@ -209,13 +229,15 @@ public class Panel extends JPanel {
 		}else if(guiHandler.guiState == GUIState.COMPARISONLAPS){
 			Lap lap = App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getLaps().get(guiHandler.selectedLap);
 			Lap lap2 = App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getLaps().get(guiHandler.selectedComparisonLap);
-			lap.drawTelemetry(this, g, -100, Color.PINK, Color.PINK, Color.PINK, App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getName());
-			lap2.drawTelemetry(this, g, 0, Color.CYAN, Color.CYAN, Color.CYAN, App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getName());
+			lap.drawTelemetry(this, g, -40, Color.PINK, Color.PINK, Color.PINK, Color.PINK, App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getName());
+			lap2.drawTelemetry(this, g, 0, Color.CYAN, Color.CYAN, Color.CYAN, Color.CYAN, App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getName());
 			//draw telemetry data for selected lap
 		}
 
 		if(guiHandler.guiState != GUIState.HOME){
-			if(guiHandler.guiState != GUIState.LAPS && guiHandler.guiState != GUIState.COMPARISONLAPS){
+			if(guiHandler.guiState == GUIState.COMPARISONRACE){}
+				//do nothing
+			else if(guiHandler.guiState != GUIState.LAPS && guiHandler.guiState != GUIState.COMPARISONLAPS){
 				g.setColor(new Color(0xa8a7a7));
 				g.fillRect(63, 43 - guiHandler.currentScroll, 300, 40);
 				g.setColor(new Color(0xc2c2c2));
@@ -251,8 +273,8 @@ public class Panel extends JPanel {
 			g.drawString(App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getName(), getWidth()/2 - g.getFontMetrics(font).stringWidth(App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getName())/2, 70-guiHandler.currentScroll);
 		else if(guiHandler.guiState == GUIState.COMPARISONPARTICIPANT)
 			g.drawString(App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getName(), getWidth()/2 - g.getFontMetrics(font).stringWidth(App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getName())/2, 70-guiHandler.currentScroll);
-		else if(guiHandler.guiState == GUIState.COMPARISONPARTICIPANT)
-			g.drawString(App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getName(), getWidth()/2 - g.getFontMetrics(font).stringWidth(App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getName())/2, 70-guiHandler.currentScroll);
+//		else if(guiHandler.guiState == GUIState.COMPARISONPARTICIPANT)
+//			g.drawString(App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getName(), getWidth()/2 - g.getFontMetrics(font).stringWidth(App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getName())/2, 70-guiHandler.currentScroll);
 		else if(guiHandler.guiState == GUIState.LAPS || guiHandler.guiState == GUIState.COMPARISONLAPS)
 			g.drawString("TELEMETRY DATA", getWidth()/2 - g.getFontMetrics(font).stringWidth("TELEMETRY DATA")/2, 70);
 
