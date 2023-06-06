@@ -1,0 +1,11 @@
+package me.syes;
+
+public enum GUIState {
+	HOME,
+	RACE,
+	PARTICIPANT,
+	LAPS,
+	COMPARISONRACE,
+	COMPARISONPARTICIPANT,
+	COMPARISONLAPS
+}

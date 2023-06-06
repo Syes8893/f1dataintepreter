@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="f1dataintepreter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/f1dataintepreter_jar</output-path>
+    <root id="archive" name="f1dataintepreter.jar">
+      <element id="module-output" name="f1dataintepreter" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/mariadb-java-client-3.1.4.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+    </root>
+  </artifact>
+</component>
