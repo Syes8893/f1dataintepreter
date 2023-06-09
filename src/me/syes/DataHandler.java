@@ -19,39 +19,43 @@ public class DataHandler {
 
 	public DataHandler() throws SQLException {
 		races = new ArrayList<>();
-//		ArrayList<Telemetry> telemetry = new ArrayList();
-//		telemetry.add(new Telemetry(100, 100, 0, 0, false, new Random().nextInt(51) -50));
-//		for(int i = 100; i < 140000; i+=100){
-//			telemetry.add(new Telemetry(i+100, 100, telemetry.get(i/100-1).getThrottle() + new Random().nextInt(3) -1, telemetry.get(i/100-1).getBrake() + new Random().nextInt(3) -1, false, new Random().nextInt(51) -50));
-//		}
-//		ArrayList<Telemetry> telemetry2 = new ArrayList();
-//		telemetry2.add(new Telemetry(100, 100, 0, 0, false, new Random().nextInt(51) -50));
-//		for(int i = 100; i < 180000; i+=100){
-//			telemetry2.add(new Telemetry(i, 100, telemetry2.get(i/100-1).getThrottle() + new Random().nextInt(3) -1, telemetry2.get(i/100-1).getBrake() + new Random().nextInt(3) -1, false, new Random().nextInt(51) -50));
-//		}
-//		ArrayList<Lap> laps = new ArrayList();
-//		laps.add(new Lap(telemetry, 1, 100000, 30000, 30000, 40000, true, 100));
-//		laps.add(new Lap(telemetry2, 2, 1200, 350, 300, 550, false, 100));
-//		ArrayList<Lap> laps2 = new ArrayList();
-//		laps2.add(new Lap(telemetry2, 34, 100000, 42300, 21300, 34500, true, 100));
-//		ArrayList<Participant> list = new ArrayList();
-//		list.add(new Participant(laps, "Petre", 0, "Romanian", false, 0));
-//		list.add(new Participant(laps2, "Terlouw", 1, "Dutch", false, 1));
-//		list.add(new Participant(laps2, "Norris", 2, "British", false, 2));
-//		list.add(new Participant(laps2, "Vettel", 3, "German", false, 3));
-//		list.add(new Participant(laps2, "Verstappen", 4, "Dutch", false, 4));
-//		list.add(new Participant(laps2, "Verstappen", 5, "Dutch", false, 5));
-//		list.add(new Participant(laps2, "Verstappen", 6, "Dutch", false, 6));
-//		list.add(new Participant(laps2, "Verstappen", 7, "Dutch", false, 7));
-//		list.add(new Participant(laps2, "Verstappen", 8, "Dutch", false, 8));
-//		list.add(new Participant(laps2, "Verstappen", 9, "Dutch", false, 9));
-//		races.add(new Race(list, "Short P", "Canada", "11-09-2023",1));
-//		races.add(new Race(null, "R", "Silverstone", "11-09-2023", 3));
-//		races.add(new Race(null, "SQ", "Bahrain", "11-09-2023", 5));
-//		races.add(new Race(null, "R", "Spain", "03-04-2023", 2));
-//		races.add(new Race(null, "OSQ", "Baku", "23-05-2023",4));
-//		races.add(new Race(null, "OSQ", "Australia", "23-05-2023",5));
+//		loadTestData();
 		loadData();
+	}
+
+	private void loadTestData(){
+		ArrayList<Telemetry> telemetry = new ArrayList();
+		telemetry.add(new Telemetry(100, 200, 0, 0, false, new Random().nextInt(51) -50));
+		for(int i = 100; i < 140000; i+=100) {
+			telemetry.add(new Telemetry(i+100, 200, telemetry.get(i/100-1).getThrottle() + new Random().nextInt(3) -1, telemetry.get(i/100-1).getBrake() + new Random().nextInt(3) -1, false, new Random().nextInt(51) -50));
+		}
+		ArrayList<Telemetry> telemetry2 = new ArrayList();
+		telemetry2.add(new Telemetry(100, 100, 100, 0, false, new Random().nextInt(51) -50));
+		for(int i = 100; i < 180000; i+=100) {
+			telemetry2.add(new Telemetry(i, 100, 100, telemetry2.get(i/100-1).getBrake() + new Random().nextInt(3) -1, false, new Random().nextInt(51) -50));
+		}
+		ArrayList<Lap> laps = new ArrayList();
+		laps.add(new Lap(telemetry, 1, 100000, 30000, 30000, 40000, true, 100));
+		laps.add(new Lap(telemetry2, 2, 1200, 350, 300, 550, false, 100));
+		ArrayList<Lap> laps2 = new ArrayList();
+		laps2.add(new Lap(telemetry2, 34, 100000, 42300, 21300, 34500, true, 100));
+		ArrayList<Participant> list = new ArrayList();
+		list.add(new Participant(laps, "Petre", 0, "Romanian", false, 0));
+		list.add(new Participant(laps2, "Terlouw", 1, "Dutch", false, 1));
+		list.add(new Participant(laps2, "Norris", 2, "British", false, 2));
+		list.add(new Participant(laps2, "Vettel", 3, "German", false, 3));
+		list.add(new Participant(laps2, "Verstappen", 4, "Dutch", false, 4));
+		list.add(new Participant(laps2, "Verstappen", 5, "Dutch", false, 5));
+		list.add(new Participant(laps2, "Verstappen", 6, "Dutch", false, 6));
+		list.add(new Participant(laps2, "Verstappen", 7, "Dutch", false, 7));
+		list.add(new Participant(laps2, "Verstappen", 8, "Dutch", false, 8));
+		list.add(new Participant(laps2, "Verstappen", 9, "Dutch", false, 9));
+		races.add(new Race(list, "Short P", "Canada", "11-09-2023",1));
+		races.add(new Race(null, "R", "Silverstone", "11-09-2023", 3));
+		races.add(new Race(null, "SQ", "Bahrain", "11-09-2023", 5));
+		races.add(new Race(null, "R", "Spain", "03-04-2023", 2));
+		races.add(new Race(null, "OSQ", "Baku", "23-05-2023",4));
+		races.add(new Race(null, "OSQ", "Australia", "23-05-2023",5));
 	}
 
 	private void loadData() throws SQLException {
@@ -62,7 +66,7 @@ public class DataHandler {
 		ResultSet rs = connection.createStatement().executeQuery("SELECT date, sessiontype, trackname, sessionUid FROM session;");
 		while(rs.next())
 			races.add(new Race(new ArrayList<>(), rs.getString(2), rs.getString(3), rs.getDate(1).toString(), rs.getLong(4)));
-		ResultSet rs2 = connection.createStatement().executeQuery("SELECT sessionUid, name, teamID, ai, playerIndex FROM participants ORDER BY teamID, name;");
+		ResultSet rs2 = connection.createStatement().executeQuery("SELECT sessionUid, name, teamID, ai, playerIndex FROM participants ORDER BY teamID;");
 		while(rs2.next()){
 			for(Race r : races){
 				if(rs2.getLong(1) != r.getSessionUID())

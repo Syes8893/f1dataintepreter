@@ -113,11 +113,12 @@ public class Panel extends JPanel {
 
 		if(guiHandler.guiState == GUIState.HOME){
 			for(Race race: App.dataHandler.races){
-				g.setColor(Color.ORANGE);
+				g.setColor(new Color(0xffffff));
 				g.fillRect(63, 103 + 55*App.dataHandler.races.indexOf(race) - guiHandler.currentScroll, 1160, 40);
-				g.setColor(Color.ORANGE.darker());
+				g.setColor(new Color(0xbfbfbf));
 				g.fillRect(60, 100 + 55*App.dataHandler.races.indexOf(race) - guiHandler.currentScroll, 1160, 40);
-				g.setColor(new Color(0xc2c2c2));int logowidth = 0;
+				g.setColor(new Color(0xc2c2c2).darker().darker().darker());
+				int logowidth = 0;
 				try {
 					BufferedImage bufferedImage = ImageIO.read(new File("resources/flags/" + race.getTrackName().toLowerCase().replace(" ", "_") + "_flag.png"));
 					((Graphics2D) g).drawImage(bufferedImage, 70, 120 + 55*App.dataHandler.races.indexOf(race) - guiHandler.currentScroll - bufferedImage.getHeight(null)/2, null);
@@ -158,7 +159,7 @@ public class Panel extends JPanel {
 			ArrayList<Lap> laps = App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getLaps();
 			for(Lap lap : laps){
 				if(lap.isValid())
-					if(lap.getLapNumber() == App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getFastestLap())
+					if(lap.getLapNumber() == App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getFastestLap())
 						g.setColor(new Color(0xaa3bad));
 					else
 						g.setColor(new Color(0x379626));
@@ -166,7 +167,7 @@ public class Panel extends JPanel {
 					g.setColor(new Color(0xba2323));
 				g.fillRect(63, 103 + 55*laps.indexOf(lap) - guiHandler.currentScroll, 1160, 40);
 				if(lap.isValid())
-					if(lap.getLapNumber() == App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getFastestLap())
+					if(lap.getLapNumber() == App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedParticipant).getFastestLap())
 						g.setColor(new Color(0x5a1e5c));
 					else
 						g.setColor(new Color(0x27661b));
@@ -211,12 +212,18 @@ public class Panel extends JPanel {
 			ArrayList<Lap> laps = App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getLaps();
 			for(Lap lap : laps){
 				if(lap.isValid())
-					g.setColor(new Color(0xaa3bad));
+					if(lap.getLapNumber() == App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getFastestLap())
+						g.setColor(new Color(0xaa3bad));
+					else
+						g.setColor(new Color(0x379626));
 				else
 					g.setColor(new Color(0xba2323));
 				g.fillRect(63, 103 + 55*laps.indexOf(lap) - guiHandler.currentScroll, 1160, 40);
 				if(lap.isValid())
-					g.setColor(new Color(0x5a1e5c));
+					if(lap.getLapNumber() == App.dataHandler.races.get(guiHandler.selectedRace).getParticipants().get(guiHandler.selectedComparisonParticipant).getFastestLap())
+						g.setColor(new Color(0x5a1e5c));
+					else
+						g.setColor(new Color(0x27661b));
 				else
 					g.setColor(new Color(0x8a1919));
 				g.fillRect(60, 100 + 55*laps.indexOf(lap) - guiHandler.currentScroll, 1160, 40);

@@ -59,7 +59,13 @@ public class Lap {
 			if(telemetry.size() > index+1)
 				g.drawLine(50 - panel.guiHandler.currentScroll + (telemetry.indexOf(telemetryPacket)+1)*4, (int) (center-1-100 - ((double) telemetryPacket.getSpeed()/300)*100)
 						,50 - panel.guiHandler.currentScroll + (telemetry.indexOf(telemetryPacket)+2)*4, (int) (center-1-100 - ((double) telemetry.get(index+1).getSpeed()/300)*100));
-			g.fillRect(50 - panel.guiHandler.currentScroll + (telemetry.indexOf(telemetryPacket)+1)*4, (int) (center-1-100 - ((double) telemetryPacket.getSpeed()/300)*100), 1, 1);
+			else
+				g.fillRect(50 - panel.guiHandler.currentScroll + (telemetry.indexOf(telemetryPacket)+1)*4, (int) (center-1-100 - ((double) telemetryPacket.getSpeed()/300)*100), 1, 1);
+			Color speedColorLight = new Color(speedColor.getRed(), speedColor.getBlue(), speedColor.getGreen(), 30);
+			if(telemetryPacket.getThrottle() == 100){
+				g.setColor(speedColorLight);
+				g.fillRect(50 - panel.guiHandler.currentScroll + (telemetry.indexOf(telemetryPacket)+1)*4, (int) (center-1-100 - ((double) telemetryPacket.getSpeed()/300)*100), 4, (int) (((double) telemetryPacket.getSpeed()/300)*100));
+			}
 			g.setColor(throttleColor);
 			if(telemetry.size() > index+1)
 				g.drawLine(50 - panel.guiHandler.currentScroll + (telemetry.indexOf(telemetryPacket)+1)*4, center-1+50 - (telemetryPacket.getThrottle())

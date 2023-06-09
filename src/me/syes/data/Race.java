@@ -25,15 +25,15 @@ public class Race {
 	}
 
 	public String getSessionType() {
-		if(sessionType.equals("R"))
+		if(sessionType.equalsIgnoreCase("R"))
 			return "Race";
-		if(sessionType.equals("SQ"))
+		if(sessionType.equalsIgnoreCase("SHORT Q"))
 			return "Short Qualifying";
-		if(sessionType.equals("OSQ"))
+		if(sessionType.equalsIgnoreCase("OSQ"))
 			return "One-Shot Qualifying";
 		if(sessionType.equalsIgnoreCase("Short p"))
 			return "Short Practice";
-		return "Unknown";
+		return sessionType;
 	}
 
 	public String getTrackName() {
